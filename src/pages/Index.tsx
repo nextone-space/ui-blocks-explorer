@@ -9,6 +9,8 @@ import { components, categories, ComponentType } from '@/data/components';
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import ComponentSidebar from '@/components/ComponentSidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -16,6 +18,7 @@ const Index = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState<'latest' | 'popular' | 'hot'>('latest');
   const itemsPerPage = 8;
 
   // Filter components based on category and search query
@@ -26,16 +29,31 @@ const Index = () => {
     return matchesCategory && matchesSearch;
   });
 
+  // Sort components based on the selected order
+  const sortedComponents = [...filteredComponents].sort((a, b) => {
+    if (sortOrder === 'latest') {
+      // Sort by updatedAt (assuming components have this property)
+      return new Date(b.updatedAt || Date.now()).getTime() - new Date(a.updatedAt || Date.now()).getTime();
+    } else if (sortOrder === 'popular') {
+      // Sort by installed count
+      return (b.installCount || 0) - (a.installCount || 0);
+    } else if (sortOrder === 'hot') {
+      // Sort by trendingScore (a combination of recency and popularity)
+      return (b.trendingScore || 0) - (a.trendingScore || 0);
+    }
+    return 0;
+  });
+
   // Calculate pagination
-  const totalPages = Math.ceil(filteredComponents.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedComponents.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentComponents = filteredComponents.slice(startIndex, endIndex);
+  const currentComponents = sortedComponents.slice(startIndex, endIndex);
 
   // Reset to first page when filters or search change
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, sortOrder]);
 
   const handleInstallClick = (component: ComponentType) => {
     showInstallToast(component);
@@ -113,77 +131,86 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <Hero 
-          title="ShadCN UI Blocks Showcase" 
-          description="Explore reusable UI components with installation and usage guides. Build beautiful interfaces with these ready-to-use components."
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex min-h-screen bg-background">
+        <ComponentSidebar 
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          sortOrder={sortOrder}
+          onSortOrderChange={setSortOrder}
         />
-
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <ComponentFilter 
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+        
+        <div className="flex-1 container mx-auto px-4 py-8">
+          <Hero 
+            title="ShadCN UI Blocks Showcase" 
+            description="Explore reusable UI components with installation and usage guides. Build beautiful interfaces with these ready-to-use components."
           />
-          
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search components..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <ComponentFilter 
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
             />
+            
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search components..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+            {currentComponents.map((component) => (
+              <ComponentCard
+                key={component.id}
+                component={component}
+                onClickInstall={handleInstallClick}
+                onClickUsage={handleUsageClick}
+              />
+            ))}
+          </div>
+
+          {sortedComponents.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground">No components found. Try adjusting your search or category filter.</p>
+            </div>
+          )}
+
+          {totalPages > 1 && (
+            <Pagination className="mt-8">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious 
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+                
+                {generatePaginationItems()}
+                
+                <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-          {currentComponents.map((component) => (
-            <ComponentCard
-              key={component.id}
-              component={component}
-              onClickInstall={handleInstallClick}
-              onClickUsage={handleUsageClick}
-            />
-          ))}
-        </div>
-
-        {filteredComponents.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-muted-foreground">No components found. Try adjusting your search or category filter.</p>
-          </div>
-        )}
-
-        {totalPages > 1 && (
-          <Pagination className="mt-8">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-              
-              {generatePaginationItems()}
-              
-              <PaginationItem>
-                <PaginationNext 
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+        <UsageDrawer 
+          component={selectedComponent} 
+          open={isDrawerOpen}
+          onOpenChange={setIsDrawerOpen}
+        />
       </div>
-
-      <UsageDrawer 
-        component={selectedComponent} 
-        open={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-      />
-    </div>
+    </SidebarProvider>
   );
 };
 
