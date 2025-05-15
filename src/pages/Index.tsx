@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Hero from '@/components/Hero';
 import ComponentFilter from '@/components/ComponentFilter';
@@ -11,6 +10,8 @@ import { Search } from "lucide-react";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import ComponentSidebar from '@/components/ComponentSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ArrowDown, ArrowUp, Filter } from "lucide-react";
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -32,14 +33,11 @@ const Index = () => {
   // Sort components based on the selected order
   const sortedComponents = [...filteredComponents].sort((a, b) => {
     if (sortOrder === 'latest') {
-      // Sort by updatedAt (assuming components have this property)
-      return new Date(b.updatedAt || Date.now()).getTime() - new Date(a.updatedAt || Date.now()).getTime();
+      return new Date(b.createdAt || Date.now()).getTime() - new Date(a.createdAt || Date.now()).getTime();
     } else if (sortOrder === 'popular') {
-      // Sort by installed count
-      return (b.installCount || 0) - (a.installCount || 0);
+      return (b.downloads || 0) - (a.downloads || 0);
     } else if (sortOrder === 'hot') {
-      // Sort by trendingScore (a combination of recency and popularity)
-      return (b.trendingScore || 0) - (a.trendingScore || 0);
+      return (b.stars || 0) - (a.stars || 0);
     }
     return 0;
   });
@@ -136,8 +134,6 @@ const Index = () => {
         <ComponentSidebar 
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
-          sortOrder={sortOrder}
-          onSortOrderChange={setSortOrder}
         />
         
         <div className="flex-1 container mx-auto px-4 py-8">
@@ -147,11 +143,32 @@ const Index = () => {
           />
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <ComponentFilter 
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              <ComponentFilter 
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
+
+              <div className="w-full md:w-auto">
+                <ToggleGroup type="single" value={sortOrder} onValueChange={(value) => {
+                  if (value) setSortOrder(value as 'latest' | 'popular' | 'hot');
+                }} className="justify-start">
+                  <ToggleGroupItem value="latest" aria-label="Sort by latest" className="flex items-center gap-2">
+                    <ArrowDown className="h-4 w-4" />
+                    <span>Latest</span>
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="popular" aria-label="Sort by popular" className="flex items-center gap-2">
+                    <ArrowUp className="h-4 w-4" />
+                    <span>Popular</span>
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="hot" aria-label="Sort by hot" className="flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    <span>Hot</span>
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
+            </div>
             
             <div className="relative w-full md:w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
