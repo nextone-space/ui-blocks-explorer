@@ -10,7 +10,6 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarTrigger,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { ListOrdered } from "lucide-react";
@@ -30,7 +29,6 @@ const ComponentSidebar = ({
       <SidebarRail />
       <SidebarHeader className="flex flex-row items-center justify-between p-4">
         <h3 className="text-lg font-semibold">Components</h3>
-        <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

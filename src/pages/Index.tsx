@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Hero from '@/components/Hero';
 import ComponentFilter from '@/components/ComponentFilter';
@@ -12,6 +13,7 @@ import ComponentSidebar from '@/components/ComponentSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { ArrowDown, ArrowUp, Filter } from "lucide-react";
+import Header from '@/components/Header';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -130,102 +132,105 @@ const Index = () => {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="flex min-h-screen bg-background">
-        <ComponentSidebar 
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
-        
-        <div className="flex-1 container mx-auto px-4 py-8">
-          <Hero 
-            title="ShadCN UI Blocks Showcase" 
-            description="Explore reusable UI components with installation and usage guides. Build beautiful interfaces with these ready-to-use components."
+      <div className="flex flex-col min-h-screen bg-background">
+        <Header />
+        <div className="flex flex-1">
+          <ComponentSidebar 
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
           />
+          
+          <div className="flex-1 container mx-auto px-4 py-8">
+            <Hero 
+              title="ShadCN UI Blocks Showcase" 
+              description="Explore reusable UI components with installation and usage guides. Build beautiful interfaces with these ready-to-use components."
+            />
 
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <div className="flex flex-col md:flex-row gap-4 items-center">
-              <ComponentFilter 
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-              />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div className="flex flex-col md:flex-row gap-4 items-center">
+                <ComponentFilter 
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  onSelectCategory={setSelectedCategory}
+                />
 
-              <div className="w-full md:w-auto">
-                <ToggleGroup type="single" value={sortOrder} onValueChange={(value) => {
-                  if (value) setSortOrder(value as 'latest' | 'popular' | 'hot');
-                }} className="justify-start">
-                  <ToggleGroupItem value="latest" aria-label="Sort by latest" className="flex items-center gap-2">
-                    <ArrowDown className="h-4 w-4" />
-                    <span>Latest</span>
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="popular" aria-label="Sort by popular" className="flex items-center gap-2">
-                    <ArrowUp className="h-4 w-4" />
-                    <span>Popular</span>
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="hot" aria-label="Sort by hot" className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
-                    <span>Hot</span>
-                  </ToggleGroupItem>
-                </ToggleGroup>
+                <div className="w-full md:w-auto">
+                  <ToggleGroup type="single" value={sortOrder} onValueChange={(value) => {
+                    if (value) setSortOrder(value as 'latest' | 'popular' | 'hot');
+                  }} className="justify-start">
+                    <ToggleGroupItem value="latest" aria-label="Sort by latest" className="flex items-center gap-2">
+                      <ArrowDown className="h-4 w-4" />
+                      <span>Latest</span>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="popular" aria-label="Sort by popular" className="flex items-center gap-2">
+                      <ArrowUp className="h-4 w-4" />
+                      <span>Popular</span>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="hot" aria-label="Sort by hot" className="flex items-center gap-2">
+                      <Filter className="h-4 w-4" />
+                      <span>Hot</span>
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              </div>
+              
+              <div className="relative w-full md:w-80">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  placeholder="Search components..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
               </div>
             </div>
-            
-            <div className="relative w-full md:w-80">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Search components..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+              {currentComponents.map((component) => (
+                <ComponentCard
+                  key={component.id}
+                  component={component}
+                  onClickInstall={handleInstallClick}
+                  onClickUsage={handleUsageClick}
+                />
+              ))}
             </div>
+
+            {sortedComponents.length === 0 && (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground">No components found. Try adjusting your search or category filter.</p>
+              </div>
+            )}
+
+            {totalPages > 1 && (
+              <Pagination className="mt-8">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                  
+                  {generatePaginationItems()}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-            {currentComponents.map((component) => (
-              <ComponentCard
-                key={component.id}
-                component={component}
-                onClickInstall={handleInstallClick}
-                onClickUsage={handleUsageClick}
-              />
-            ))}
-          </div>
-
-          {sortedComponents.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">No components found. Try adjusting your search or category filter.</p>
-            </div>
-          )}
-
-          {totalPages > 1 && (
-            <Pagination className="mt-8">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                    className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
-                  />
-                </PaginationItem>
-                
-                {generatePaginationItems()}
-                
-                <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          )}
+          <UsageDrawer 
+            component={selectedComponent} 
+            open={isDrawerOpen}
+            onOpenChange={setIsDrawerOpen}
+          />
         </div>
-
-        <UsageDrawer 
-          component={selectedComponent} 
-          open={isDrawerOpen}
-          onOpenChange={setIsDrawerOpen}
-        />
       </div>
     </SidebarProvider>
   );
