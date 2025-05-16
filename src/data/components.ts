@@ -13,7 +13,22 @@ export interface ComponentType {
   description: string;
   usage: string;
   props?: PropType[];
+  createdAt?: string; // Added for sorting by latest
+  downloads?: number; // Added for sorting by popularity
+  stars?: number;     // Added for sorting by hot
 }
+
+// Helper function to generate random dates within the last 30 days
+const randomRecentDate = (): string => {
+  const now = new Date();
+  const daysAgo = Math.floor(Math.random() * 30);
+  const date = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000);
+  return date.toISOString();
+};
+
+// Helper functions for random numbers
+const randomDownloads = (): number => Math.floor(Math.random() * 5000) + 100;
+const randomStars = (): number => Math.floor(Math.random() * 200) + 10;
 
 export const components: ComponentType[] = [
   {
@@ -33,6 +48,9 @@ export function ButtonDemo() {
       { name: "size", type: "string", default: "default" },
       { name: "asChild", type: "boolean", default: "false" },
     ],
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "badge",
@@ -47,6 +65,9 @@ export function BadgeDemo() {
     props: [
       { name: "variant", type: "string", default: "default" },
     ],
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "card",
@@ -78,6 +99,9 @@ export function CardDemo() {
     </Card>
   )
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "avatar",
@@ -94,6 +118,9 @@ export function AvatarDemo() {
     </Avatar>
   )
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "dialog",
@@ -124,6 +151,9 @@ export function DialogDemo() {
     </Dialog>
   )
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "input",
@@ -135,6 +165,9 @@ export function DialogDemo() {
 export function InputDemo() {
   return <Input type="email" placeholder="Email" />
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "select",
@@ -163,6 +196,9 @@ export function SelectDemo() {
     </Select>
   )
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "switch",
@@ -174,6 +210,9 @@ export function SelectDemo() {
 export function SwitchDemo() {
   return <Switch />
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "tabs",
@@ -194,6 +233,9 @@ export function TabsDemo() {
     </Tabs>
   )
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
   {
     id: "radio-group",
@@ -217,6 +259,9 @@ export function RadioGroupDemo() {
     </RadioGroup>
   )
 }`,
+    createdAt: randomRecentDate(),
+    downloads: randomDownloads(),
+    stars: randomStars(),
   },
 ];
 
