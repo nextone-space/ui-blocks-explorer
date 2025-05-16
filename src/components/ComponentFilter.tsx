@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -14,6 +15,8 @@ const ComponentFilter = ({
   selectedCategory, 
   onSelectCategory 
 }: CategoryProps) => {
+  const { t } = useTranslation();
+  
   return (
     <div className="flex flex-wrap gap-2 mb-8 justify-center">
       <Button
@@ -21,7 +24,7 @@ const ComponentFilter = ({
         onClick={() => onSelectCategory("all")}
         className="rounded-full"
       >
-        All
+        {t('common.all')}
       </Button>
       {categories.map((category) => (
         <Button

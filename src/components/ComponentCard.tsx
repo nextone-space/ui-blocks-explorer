@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ComponentPreview } from "@/components/ComponentPreview";
@@ -16,6 +17,8 @@ const ComponentCard = ({
   onClickInstall, 
   onClickUsage 
 }: ComponentCardProps) => {
+  const { t } = useTranslation();
+  
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <CardHeader className="pb-3">
@@ -31,7 +34,7 @@ const ComponentCard = ({
           className="flex-1"
           onClick={() => onClickInstall(component)}
         >
-          Install from Registry
+          {t('common.install')}
         </Button>
         <Button 
           variant="default" 
@@ -39,7 +42,7 @@ const ComponentCard = ({
           className="flex-1"
           onClick={() => onClickUsage(component)}
         >
-          View Usage
+          {t('common.viewUsage')}
         </Button>
       </CardFooter>
     </Card>

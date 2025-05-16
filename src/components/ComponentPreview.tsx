@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ComponentType } from "@/data/components";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const ComponentPreview = ({ component }: { component: ComponentType }) => {
+  const { t } = useTranslation();
+  
   switch (component.name) {
     case "Button":
       return <Button>Button</Button>;
@@ -81,6 +84,6 @@ export const ComponentPreview = ({ component }: { component: ComponentType }) =>
         </RadioGroup>
       );
     default:
-      return <div className="text-sm text-muted-foreground">Preview not available</div>;
+      return <div className="text-sm text-muted-foreground">{t('common.previewNotAvailable')}</div>;
   }
 };

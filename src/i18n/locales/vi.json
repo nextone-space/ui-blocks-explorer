@@ -1,0 +1,44 @@
+
+{
+  "common": {
+    "all": "Tất cả",
+    "components": "Các thành phần",
+    "categories": "Danh mục",
+    "allComponents": "Tất cả thành phần",
+    "searchComponents": "Tìm kiếm thành phần...",
+    "noComponents": "Không tìm thấy thành phần nào. Hãy điều chỉnh tìm kiếm hoặc bộ lọc danh mục của bạn.",
+    "latest": "Mới nhất",
+    "popular": "Phổ biến",
+    "hot": "Nổi bật",
+    "install": "Cài đặt từ Registry",
+    "viewUsage": "Xem cách sử dụng",
+    "installUsingCLI": "Cài đặt bằng CLI:",
+    "officialDocs": "Tài liệu chính thức",
+    "copiedClipboard": "Đã sao chép vào clipboard!",
+    "usage": "Cách dùng",
+    "props": "Props",
+    "propsNotAvailable": "Thông tin props không có sẵn",
+    "previewNotAvailable": "Bản xem trước không có sẵn"
+  },
+  "header": {
+    "title": "ShadCN UI Blocks",
+    "toggleSidebar": "Bật/tắt thanh bên",
+    "toggleTheme": "Chuyển đổi chủ đề",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "Trình diễn ShadCN UI Blocks",
+    "description": "Khám phá các thành phần UI có thể tái sử dụng với hướng dẫn cài đặt và sử dụng. Xây dựng giao diện đẹp với các thành phần sẵn sàng sử dụng này."
+  },
+  "propsTable": {
+    "prop": "Prop",
+    "type": "Kiểu",
+    "default": "Mặc định"
+  },
+  "language": {
+    "en": "Tiếng Anh",
+    "fr": "Tiếng Pháp",
+    "vi": "Tiếng Việt",
+    "selectLanguage": "Chọn ngôn ngữ"
+  }
+}

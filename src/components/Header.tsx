@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { 
@@ -9,8 +10,10 @@ import {
   Github 
 } from "lucide-react";
 import { useTheme } from '@/components/ThemeProvider';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Header = () => {
+  const { t } = useTranslation();
   const { theme, setTheme } = useTheme();
 
   return (
@@ -19,11 +22,12 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <SidebarTrigger>
             <PanelLeft className="h-5 w-5" />
-            <span className="sr-only">Toggle Sidebar</span>
+            <span className="sr-only">{t('header.toggleSidebar')}</span>
           </SidebarTrigger>
-          <h1 className="text-xl font-semibold md:text-2xl">ShadCN UI Blocks</h1>
+          <h1 className="text-xl font-semibold md:text-2xl">{t('header.title')}</h1>
         </div>
         <div className="flex items-center gap-2">
+          <LanguageSelector />
           <Button 
             variant="ghost" 
             size="icon"
@@ -35,11 +39,11 @@ const Header = () => {
             <Moon className={`absolute h-5 w-5 transition-all ${
               theme === "dark" ? "scale-100" : "scale-0"
             }`} />
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">{t('header.toggleTheme')}</span>
           </Button>
           <Button variant="ghost" size="icon">
             <Github className="h-5 w-5" />
-            <span className="sr-only">GitHub</span>
+            <span className="sr-only">{t('header.github')}</span>
           </Button>
         </div>
       </div>

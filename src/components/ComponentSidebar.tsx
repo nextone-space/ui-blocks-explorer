@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Sidebar,
   SidebarContent,
@@ -24,15 +25,17 @@ const ComponentSidebar = ({
   selectedCategory, 
   onSelectCategory
 }: ComponentSidebarProps) => {
+  const { t } = useTranslation();
+  
   return (
     <Sidebar>
       <SidebarRail />
       <SidebarHeader className="flex flex-row items-center justify-between p-4">
-        <h3 className="text-lg font-semibold">Components</h3>
+        <h3 className="text-lg font-semibold">{t('common.components')}</h3>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Categories</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('common.categories')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
@@ -41,7 +44,7 @@ const ComponentSidebar = ({
                   onClick={() => onSelectCategory('all')}
                 >
                   <ListOrdered className="h-4 w-4 mr-2" />
-                  <span>All Components</span>
+                  <span>{t('common.allComponents')}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               {categories.map((category) => (

@@ -1,0 +1,44 @@
+
+{
+  "common": {
+    "all": "All",
+    "components": "Components",
+    "categories": "Categories",
+    "allComponents": "All Components",
+    "searchComponents": "Search components...",
+    "noComponents": "No components found. Try adjusting your search or category filter.",
+    "latest": "Latest",
+    "popular": "Popular",
+    "hot": "Hot",
+    "install": "Install from Registry",
+    "viewUsage": "View Usage",
+    "installUsingCLI": "Install using CLI:",
+    "officialDocs": "Official Documentation",
+    "copiedClipboard": "Copied to clipboard!",
+    "usage": "Usage",
+    "props": "Props",
+    "propsNotAvailable": "Props information not available",
+    "previewNotAvailable": "Preview not available"
+  },
+  "header": {
+    "title": "ShadCN UI Blocks",
+    "toggleSidebar": "Toggle Sidebar",
+    "toggleTheme": "Toggle theme",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "ShadCN UI Blocks Showcase",
+    "description": "Explore reusable UI components with installation and usage guides. Build beautiful interfaces with these ready-to-use components."
+  },
+  "propsTable": {
+    "prop": "Prop",
+    "type": "Type",
+    "default": "Default"
+  },
+  "language": {
+    "en": "English",
+    "fr": "French",
+    "vi": "Vietnamese",
+    "selectLanguage": "Select language"
+  }
+}

@@ -1,0 +1,44 @@
+
+{
+  "common": {
+    "all": "Tous",
+    "components": "Composants",
+    "categories": "Catégories",
+    "allComponents": "Tous les composants",
+    "searchComponents": "Rechercher des composants...",
+    "noComponents": "Aucun composant trouvé. Essayez d'ajuster votre recherche ou le filtre de catégorie.",
+    "latest": "Plus récent",
+    "popular": "Populaire",
+    "hot": "Tendance",
+    "install": "Installer depuis le Registre",
+    "viewUsage": "Voir l'utilisation",
+    "installUsingCLI": "Installer en utilisant CLI:",
+    "officialDocs": "Documentation officielle",
+    "copiedClipboard": "Copié dans le presse-papiers!",
+    "usage": "Utilisation",
+    "props": "Props",
+    "propsNotAvailable": "Informations sur les props non disponibles",
+    "previewNotAvailable": "Aperçu non disponible"
+  },
+  "header": {
+    "title": "Blocs UI ShadCN",
+    "toggleSidebar": "Basculer la barre latérale",
+    "toggleTheme": "Changer de thème",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "Vitrine de blocs UI ShadCN",
+    "description": "Explorez des composants UI réutilisables avec des guides d'installation et d'utilisation. Créez de belles interfaces avec ces composants prêts à l'emploi."
+  },
+  "propsTable": {
+    "prop": "Prop",
+    "type": "Type",
+    "default": "Par défaut"
+  },
+  "language": {
+    "en": "Anglais",
+    "fr": "Français",
+    "vi": "Vietnamien",
+    "selectLanguage": "Sélectionner la langue"
+  }
+}

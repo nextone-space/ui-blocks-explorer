@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ComponentType } from "@/data/components";
 import { 
   Sheet, 
@@ -20,10 +21,12 @@ interface UsageDrawerProps {
 }
 
 export function UsageDrawer({ component, open, onOpenChange }: UsageDrawerProps) {
+  const { t } = useTranslation();
+  
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     // You could add a toast notification here
-    console.log('Copied to clipboard!');
+    console.log(t('common.copiedClipboard'));
   };
 
   if (!component) return null;
@@ -40,8 +43,8 @@ export function UsageDrawer({ component, open, onOpenChange }: UsageDrawerProps)
 
         <Tabs defaultValue="usage" className="mb-6">
           <TabsList className="mb-4">
-            <TabsTrigger value="usage">Usage</TabsTrigger>
-            <TabsTrigger value="props">Props</TabsTrigger>
+            <TabsTrigger value="usage">{t('common.usage')}</TabsTrigger>
+            <TabsTrigger value="props">{t('common.props')}</TabsTrigger>
           </TabsList>
           <TabsContent value="usage" className="space-y-4">
             <div className="relative">
@@ -68,9 +71,9 @@ export function UsageDrawer({ component, open, onOpenChange }: UsageDrawerProps)
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b">
-                        <th className="py-2 px-4 text-left font-medium">Prop</th>
-                        <th className="py-2 px-4 text-left font-medium">Type</th>
-                        <th className="py-2 px-4 text-left font-medium">Default</th>
+                        <th className="py-2 px-4 text-left font-medium">{t('propsTable.prop')}</th>
+                        <th className="py-2 px-4 text-left font-medium">{t('propsTable.type')}</th>
+                        <th className="py-2 px-4 text-left font-medium">{t('propsTable.default')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -85,7 +88,7 @@ export function UsageDrawer({ component, open, onOpenChange }: UsageDrawerProps)
                   </table>
                 </div>
               ) : (
-                <p className="text-muted-foreground">Props information not available</p>
+                <p className="text-muted-foreground">{t('common.propsNotAvailable')}</p>
               )}
             </div>
           </TabsContent>
@@ -93,7 +96,7 @@ export function UsageDrawer({ component, open, onOpenChange }: UsageDrawerProps)
 
         <div className="flex flex-col gap-4">
           <div className="text-sm text-muted-foreground">
-            <p className="font-medium mb-2">Install using CLI:</p>
+            <p className="font-medium mb-2">{t('common.installUsingCLI')}:</p>
             <pre className="p-2 rounded bg-muted">
               <code>
                 npx shadcn-ui@latest add {component.id}
@@ -108,7 +111,7 @@ export function UsageDrawer({ component, open, onOpenChange }: UsageDrawerProps)
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2"
             >
-              Official Documentation
+              {t('common.officialDocs')}
               <ExternalLink className="h-4 w-4" />
             </a>
           </Button>

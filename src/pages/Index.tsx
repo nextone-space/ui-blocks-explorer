@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Hero from '@/components/Hero';
 import ComponentFilter from '@/components/ComponentFilter';
 import ComponentCard from '@/components/ComponentCard';
@@ -16,6 +16,7 @@ import { ArrowDown, ArrowUp, Filter } from "lucide-react";
 import Header from '@/components/Header';
 
 const Index = () => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedComponent, setSelectedComponent] = useState<ComponentType | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -141,10 +142,7 @@ const Index = () => {
           />
           
           <div className="flex-1 container mx-auto px-4 py-8">
-            <Hero 
-              title="ShadCN UI Blocks Showcase" 
-              description="Explore reusable UI components with installation and usage guides. Build beautiful interfaces with these ready-to-use components."
-            />
+            <Hero />
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -160,15 +158,15 @@ const Index = () => {
                   }} className="justify-start">
                     <ToggleGroupItem value="latest" aria-label="Sort by latest" className="flex items-center gap-2">
                       <ArrowDown className="h-4 w-4" />
-                      <span>Latest</span>
+                      <span>{t('common.latest')}</span>
                     </ToggleGroupItem>
                     <ToggleGroupItem value="popular" aria-label="Sort by popular" className="flex items-center gap-2">
                       <ArrowUp className="h-4 w-4" />
-                      <span>Popular</span>
+                      <span>{t('common.popular')}</span>
                     </ToggleGroupItem>
                     <ToggleGroupItem value="hot" aria-label="Sort by hot" className="flex items-center gap-2">
                       <Filter className="h-4 w-4" />
-                      <span>Hot</span>
+                      <span>{t('common.hot')}</span>
                     </ToggleGroupItem>
                   </ToggleGroup>
                 </div>
@@ -177,7 +175,7 @@ const Index = () => {
               <div className="relative w-full md:w-80">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder="Search components..."
+                  placeholder={t('common.searchComponents')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
@@ -198,7 +196,7 @@ const Index = () => {
 
             {sortedComponents.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-muted-foreground">No components found. Try adjusting your search or category filter.</p>
+                <p className="text-muted-foreground">{t('common.noComponents')}</p>
               </div>
             )}
 
