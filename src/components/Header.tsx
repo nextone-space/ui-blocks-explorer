@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,21 @@ import ThemeConfigPanel from '@/components/ThemeConfigPanel';
 const Header = () => {
   const { t } = useTranslation();
   const { theme, setTheme } = useTheme();
+
+  // Force re-render when theme changes
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key && e.key.startsWith('themeConfig_')) {
+        // Force re-render by triggering state update
+        setTheme(theme);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [theme, setTheme]);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -36,10 +51,10 @@ const Header = () => {
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
             <Sun className={`h-5 w-5 transition-all ${
-              theme === "dark" ? "scale-0" : "scale-100"
+              theme !== "dark" ? "scale-100" : "scale-0 opacity-0"
             }`} />
             <Moon className={`absolute h-5 w-5 transition-all ${
-              theme === "dark" ? "scale-0" : "scale-100"
+              theme === "dark" ? "scale-100" : "scale-0 opacity-0"
             }`} />
             <span className="sr-only">{t('header.toggleTheme')}</span>
           </Button>

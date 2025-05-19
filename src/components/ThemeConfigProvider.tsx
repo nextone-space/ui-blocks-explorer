@@ -8,6 +8,11 @@ interface ThemeConfigContextType {
   accentColor: string;
   borderRadius: string;
   fontScale: number;
+  mutedColor: string;
+  backgroundColor: string;
+  cardColor: string;
+  textColor: string;
+  borderColor: string;
   updateThemeConfig: (config: Partial<ThemeConfigValues>) => void;
   resetThemeConfig: () => void;
 }
@@ -18,14 +23,37 @@ interface ThemeConfigValues {
   accentColor: string;
   borderRadius: string;
   fontScale: number;
+  mutedColor: string;
+  backgroundColor: string;
+  cardColor: string;
+  textColor: string;
+  borderColor: string;
 }
 
-const defaultThemeConfig: ThemeConfigValues = {
-  primaryColor: "hsl(222.2, 47.4%, 11.2%)",
-  secondaryColor: "hsl(210, 40%, 96.1%)",
-  accentColor: "hsl(210, 40%, 96.1%)",
+const defaultLightThemeConfig: ThemeConfigValues = {
+  primaryColor: "222.2 47.4% 11.2%",
+  secondaryColor: "210 40% 96.1%",
+  accentColor: "210 40% 96.1%",
   borderRadius: "0.5rem",
   fontScale: 1,
+  mutedColor: "210 40% 96.1%",
+  backgroundColor: "0 0% 100%",
+  cardColor: "0 0% 100%",
+  textColor: "222.2 84% 4.9%",
+  borderColor: "214.3 31.8% 91.4%",
+};
+
+const defaultDarkThemeConfig: ThemeConfigValues = {
+  primaryColor: "210 40% 98%",
+  secondaryColor: "217.2 32.6% 17.5%",
+  accentColor: "217.2 32.6% 17.5%",
+  borderRadius: "0.5rem",
+  fontScale: 1,
+  mutedColor: "217.2 32.6% 17.5%",
+  backgroundColor: "222.2 84% 4.9%",
+  cardColor: "222.2 84% 4.9%",
+  textColor: "210 40% 98%",
+  borderColor: "217.2 32.6% 17.5%",
 };
 
 const ThemeConfigContext = createContext<ThemeConfigContextType | undefined>(undefined);
@@ -35,7 +63,7 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
   const [themeConfig, setThemeConfig] = useState<ThemeConfigValues>(() => {
     // Try to load saved theme config from localStorage
     if (typeof window !== "undefined") {
-      const savedConfig = localStorage.getItem("themeConfig");
+      const savedConfig = localStorage.getItem(`themeConfig_${theme}`);
       if (savedConfig) {
         try {
           return JSON.parse(savedConfig);
@@ -44,8 +72,22 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
         }
       }
     }
-    return defaultThemeConfig;
+    return theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig;
   });
+
+  // Update config when theme changes
+  useEffect(() => {
+    const savedConfig = localStorage.getItem(`themeConfig_${theme}`);
+    if (savedConfig) {
+      try {
+        setThemeConfig(JSON.parse(savedConfig));
+      } catch (e) {
+        setThemeConfig(theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig);
+      }
+    } else {
+      setThemeConfig(theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig);
+    }
+  }, [theme]);
 
   // Apply theme configuration to CSS variables
   useEffect(() => {
@@ -53,23 +95,46 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
     
     // Apply theme config values to CSS variables
     root.style.setProperty("--primary", themeConfig.primaryColor);
-    root.style.setProperty("--secondary", themeConfig.secondaryColor);
-    root.style.setProperty("--accent", themeConfig.accentColor);
-    root.style.setProperty("--radius", themeConfig.borderRadius);
+    root.style.setProperty("--primary-foreground", theme === 'dark' ? "222.2 47.4% 11.2%" : "210 40% 98%");
     
-    // Apply font scale
+    root.style.setProperty("--secondary", themeConfig.secondaryColor);
+    root.style.setProperty("--secondary-foreground", theme === 'dark' ? "210 40% 98%" : "222.2 47.4% 11.2%");
+    
+    root.style.setProperty("--accent", themeConfig.accentColor);
+    root.style.setProperty("--accent-foreground", theme === 'dark' ? "210 40% 98%" : "222.2 47.4% 11.2%");
+    
+    root.style.setProperty("--muted", themeConfig.mutedColor);
+    root.style.setProperty("--muted-foreground", theme === 'dark' ? "215 20.2% 65.1%" : "215.4 16.3% 46.9%");
+    
+    root.style.setProperty("--background", themeConfig.backgroundColor);
+    root.style.setProperty("--foreground", themeConfig.textColor);
+    
+    root.style.setProperty("--card", themeConfig.cardColor);
+    root.style.setProperty("--card-foreground", themeConfig.textColor);
+    
+    root.style.setProperty("--border", themeConfig.borderColor);
+    root.style.setProperty("--input", themeConfig.borderColor);
+    
+    root.style.setProperty("--radius", themeConfig.borderRadius);
     root.style.setProperty("--font-scale", themeConfig.fontScale.toString());
     
     // Save theme config to localStorage
-    localStorage.setItem("themeConfig", JSON.stringify(themeConfig));
+    localStorage.setItem(`themeConfig_${theme}`, JSON.stringify(themeConfig));
   }, [themeConfig, theme]);
 
   const updateThemeConfig = (config: Partial<ThemeConfigValues>) => {
-    setThemeConfig(prev => ({ ...prev, ...config }));
+    setThemeConfig(prev => {
+      const newConfig = { ...prev, ...config };
+      // Save immediately to ensure UI updates properly
+      localStorage.setItem(`themeConfig_${theme}`, JSON.stringify(newConfig));
+      return newConfig;
+    });
   };
 
   const resetThemeConfig = () => {
-    setThemeConfig(defaultThemeConfig);
+    const defaultConfig = theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig;
+    setThemeConfig(defaultConfig);
+    localStorage.setItem(`themeConfig_${theme}`, JSON.stringify(defaultConfig));
   };
 
   return (
