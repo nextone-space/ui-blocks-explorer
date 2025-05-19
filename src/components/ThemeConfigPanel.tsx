@@ -20,6 +20,15 @@ import { Palette, RefreshCw, Check, Layout, Type, Sparkles } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { 
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ThemeConfigPanelProps {
   side?: "top" | "right" | "bottom" | "left";
@@ -57,6 +66,19 @@ const themePresets = [
   { name: "orange", icon: "🟠", label: "Orange" },
   { name: "compact", icon: "🔍", label: "Compact" },
   { name: "spacious", icon: "🌌", label: "Spacious" },
+  { name: "serif", icon: "📜", label: "Serif" },
+  { name: "modern", icon: "🎨", label: "Modern" },
+];
+
+// Font family options
+const fontFamilyOptions = [
+  { value: "system-ui, sans-serif", label: "System UI" },
+  { value: "Arial, sans-serif", label: "Arial" },
+  { value: "Helvetica, sans-serif", label: "Helvetica" },
+  { value: "Georgia, serif", label: "Georgia" },
+  { value: "Garamond, serif", label: "Garamond" },
+  { value: "Verdana, sans-serif", label: "Verdana" },
+  { value: "Courier New, monospace", label: "Courier New" },
 ];
 
 const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
@@ -68,6 +90,10 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
     accentColor,
     borderRadius,
     fontScale,
+    fontFamily,
+    headingFontFamily,
+    letterSpacing,
+    lineHeight,
     mutedColor,
     backgroundColor,
     cardColor,
@@ -216,7 +242,7 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
               <TabsTrigger value="typography"><Type className="h-4 w-4 mr-1" /> Type</TabsTrigger>
             </TabsList>
             
-            {/* New Presets Tab */}
+            {/* Presets Tab */}
             <TabsContent value="presets" className="space-y-6">
               <div className="space-y-4">
                 <Label>Theme Presets</Label>
@@ -238,6 +264,7 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
               </div>
             </TabsContent>
             
+            {/* Colors Tab */}
             <TabsContent value="colors" className="space-y-6">
               <ColorInput 
                 id="primaryColor" 
@@ -298,6 +325,7 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
               />
             </TabsContent>
             
+            {/* Layout Tab */}
             <TabsContent value="layout" className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="borderRadius">{t('themeConfig.borderRadius', 'Border Radius')}</Label>
@@ -314,11 +342,11 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
                   />
                 </div>
               </div>
-              
-              {/* Add more layout options here if needed */}
             </TabsContent>
             
+            {/* Typography Tab */}
             <TabsContent value="typography" className="space-y-6">
+              {/* Font Scale */}
               <div className="space-y-2">
                 <Label htmlFor="fontScale">
                   {t('themeConfig.fontScale', 'Font Scale')}: {fontScale.toFixed(1)}
@@ -331,19 +359,105 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
                   value={[fontScale]}
                   onValueChange={([value]) => updateThemeConfig({ fontScale: value })}
                 />
-                
-                <div className="pt-4 space-y-2">
-                  <p className="font-semibold">Preview:</p>
-                  <h2 style={{ fontSize: `calc(${fontScale} * 1.5em)` }} className="font-bold">
-                    Heading Text
-                  </h2>
-                  <p style={{ fontSize: `calc(${fontScale} * 1em)` }}>
-                    This is how your text will look with the current scaling.
-                  </p>
-                </div>
               </div>
               
-              {/* Add more typography options here if needed */}
+              {/* Font Family */}
+              <div className="space-y-2">
+                <Label htmlFor="fontFamily">{t('themeConfig.fontFamily', 'Base Font Family')}</Label>
+                <Select 
+                  value={fontFamily} 
+                  onValueChange={(value) => updateThemeConfig({ fontFamily: value })}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a font family" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Font Families</SelectLabel>
+                      {fontFamilyOptions.map(option => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Heading Font Family */}
+              <div className="space-y-2">
+                <Label htmlFor="headingFontFamily">{t('themeConfig.headingFontFamily', 'Heading Font Family')}</Label>
+                <Select 
+                  value={headingFontFamily} 
+                  onValueChange={(value) => updateThemeConfig({ headingFontFamily: value })}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a heading font family" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Font Families</SelectLabel>
+                      {fontFamilyOptions.map(option => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              {/* Letter Spacing */}
+              <div className="space-y-2">
+                <Label htmlFor="letterSpacing">
+                  {t('themeConfig.letterSpacing', 'Letter Spacing')}: {letterSpacing.toFixed(1)}px
+                </Label>
+                <Slider
+                  id="letterSpacing"
+                  min={-2}
+                  max={2}
+                  step={0.1}
+                  value={[letterSpacing]}
+                  onValueChange={([value]) => updateThemeConfig({ letterSpacing: value })}
+                />
+              </div>
+              
+              {/* Line Height */}
+              <div className="space-y-2">
+                <Label htmlFor="lineHeight">
+                  {t('themeConfig.lineHeight', 'Line Height')}: {lineHeight.toFixed(1)}
+                </Label>
+                <Slider
+                  id="lineHeight"
+                  min={1}
+                  max={2}
+                  step={0.1}
+                  value={[lineHeight]}
+                  onValueChange={([value]) => updateThemeConfig({ lineHeight: value })}
+                />
+              </div>
+              
+              {/* Typography Preview */}
+              <div className="pt-4 space-y-4 border p-4 rounded-lg">
+                <p className="font-semibold">Preview:</p>
+                <div style={{ 
+                  fontFamily: headingFontFamily,
+                  fontSize: `calc(${fontScale} * 1.5rem)`,
+                  letterSpacing: `${letterSpacing}px`,
+                  lineHeight: lineHeight
+                }} className="font-bold mb-2">
+                  Heading Text
+                </div>
+                <div style={{ 
+                  fontFamily: fontFamily,
+                  fontSize: `calc(${fontScale} * 1rem)`,
+                  letterSpacing: `${letterSpacing}px`,
+                  lineHeight: lineHeight
+                }}>
+                  <p className="mb-2">This is how your text will look with the current typography settings.</p>
+                  <p>The quick brown fox jumps over the lazy dog.</p>
+                </div>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

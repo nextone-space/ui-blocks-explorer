@@ -32,6 +32,51 @@ const Header = () => {
     };
   }, [theme, setTheme]);
 
+  // Apply theme-specific CSS to body
+  useEffect(() => {
+    // Get stored theme config
+    const savedConfig = localStorage.getItem(`themeConfig_${theme}`);
+    if (savedConfig) {
+      try {
+        const config = JSON.parse(savedConfig);
+        
+        // Apply font family to body and headings
+        if (config.fontFamily) {
+          document.body.style.fontFamily = config.fontFamily;
+        }
+        
+        // Add a style tag for heading font family
+        let styleTag = document.getElementById('theme-typography');
+        if (!styleTag) {
+          styleTag = document.createElement('style');
+          styleTag.id = 'theme-typography';
+          document.head.appendChild(styleTag);
+        }
+        
+        // Apply heading styles
+        if (config.headingFontFamily) {
+          styleTag.textContent = `
+            h1, h2, h3, h4, h5, h6 {
+              font-family: ${config.headingFontFamily};
+            }
+          `;
+        }
+        
+        // Apply letter spacing to body
+        if (config.letterSpacing !== undefined) {
+          document.body.style.letterSpacing = `${config.letterSpacing}px`;
+        }
+        
+        // Apply line height to body
+        if (config.lineHeight !== undefined) {
+          document.body.style.lineHeight = config.lineHeight.toString();
+        }
+      } catch (e) {
+        console.error("Failed to parse saved theme config", e);
+      }
+    }
+  }, [theme]);
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="container flex h-16 items-center justify-between">

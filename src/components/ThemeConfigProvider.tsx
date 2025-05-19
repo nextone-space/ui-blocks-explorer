@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useTheme } from "./ThemeProvider";
 
@@ -8,6 +7,10 @@ interface ThemeConfigContextType {
   accentColor: string;
   borderRadius: string;
   fontScale: number;
+  fontFamily: string;
+  headingFontFamily: string;
+  letterSpacing: number;
+  lineHeight: number;
   mutedColor: string;
   backgroundColor: string;
   cardColor: string;
@@ -24,6 +27,10 @@ interface ThemeConfigValues {
   accentColor: string;
   borderRadius: string;
   fontScale: number;
+  fontFamily: string;
+  headingFontFamily: string;
+  letterSpacing: number;
+  lineHeight: number;
   mutedColor: string;
   backgroundColor: string;
   cardColor: string;
@@ -38,6 +45,10 @@ const defaultLightThemeConfig: ThemeConfigValues = {
   accentColor: "210 40% 96.1%",
   borderRadius: "0.5rem",
   fontScale: 1,
+  fontFamily: "system-ui, sans-serif",
+  headingFontFamily: "system-ui, sans-serif",
+  letterSpacing: 0,
+  lineHeight: 1.5,
   mutedColor: "210 40% 96.1%",
   backgroundColor: "0 0% 100%",
   cardColor: "0 0% 100%",
@@ -52,6 +63,10 @@ const defaultDarkThemeConfig: ThemeConfigValues = {
   accentColor: "217.2 32.6% 17.5%",
   borderRadius: "0.5rem",
   fontScale: 1,
+  fontFamily: "system-ui, sans-serif",
+  headingFontFamily: "system-ui, sans-serif",
+  letterSpacing: 0,
+  lineHeight: 1.5,
   mutedColor: "217.2 32.6% 17.5%",
   backgroundColor: "222.2 84% 4.9%",
   cardColor: "222.2 84% 4.9%",
@@ -69,6 +84,10 @@ const themePresets = {
       accentColor: "221 83% 84%", // Light Blue
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "210 40% 96.1%",
       backgroundColor: "0 0% 100%",
       cardColor: "0 0% 100%",
@@ -81,6 +100,10 @@ const themePresets = {
       accentColor: "142 71% 84%", // Light Green
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "210 40% 96.1%",
       backgroundColor: "0 0% 100%",
       cardColor: "0 0% 100%",
@@ -93,6 +116,10 @@ const themePresets = {
       accentColor: "262 83% 84%", // Light Purple
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "210 40% 96.1%",
       backgroundColor: "0 0% 100%",
       cardColor: "0 0% 100%",
@@ -105,6 +132,10 @@ const themePresets = {
       accentColor: "36 100% 84%", // Light Orange
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "210 40% 96.1%",
       backgroundColor: "0 0% 100%",
       cardColor: "0 0% 100%",
@@ -115,11 +146,29 @@ const themePresets = {
       ...defaultLightThemeConfig,
       borderRadius: "0.25rem",
       fontScale: 0.9,
+      letterSpacing: -0.5,
+      lineHeight: 1.4,
     },
     spacious: {
       ...defaultLightThemeConfig,
       borderRadius: "1rem",
       fontScale: 1.1,
+      letterSpacing: 0.5,
+      lineHeight: 1.8,
+    },
+    serif: {
+      ...defaultLightThemeConfig,
+      fontFamily: "Georgia, serif",
+      headingFontFamily: "Georgia, serif",
+      letterSpacing: 0.2,
+      lineHeight: 1.6,
+    },
+    modern: {
+      ...defaultLightThemeConfig,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "Garamond, serif",
+      letterSpacing: 0.1,
+      lineHeight: 1.6,
     },
   },
   dark: {
@@ -130,6 +179,10 @@ const themePresets = {
       accentColor: "221 83% 53%", // Blue
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "217.2 32.6% 17.5%",
       backgroundColor: "222.2 84% 4.9%",
       cardColor: "222.2 84% 4.9%",
@@ -142,6 +195,10 @@ const themePresets = {
       accentColor: "142 71% 45%", // Green
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "217.2 32.6% 17.5%",
       backgroundColor: "222.2 84% 4.9%",
       cardColor: "222.2 84% 4.9%",
@@ -154,6 +211,10 @@ const themePresets = {
       accentColor: "262 83.3% 57.8%", // Purple
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "217.2 32.6% 17.5%",
       backgroundColor: "222.2 84% 4.9%",
       cardColor: "222.2 84% 4.9%",
@@ -166,6 +227,10 @@ const themePresets = {
       accentColor: "36 100% 50%", // Orange
       borderRadius: "0.5rem",
       fontScale: 1,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "system-ui, sans-serif",
+      letterSpacing: 0,
+      lineHeight: 1.5,
       mutedColor: "217.2 32.6% 17.5%",
       backgroundColor: "222.2 84% 4.9%",
       cardColor: "222.2 84% 4.9%",
@@ -176,11 +241,29 @@ const themePresets = {
       ...defaultDarkThemeConfig,
       borderRadius: "0.25rem",
       fontScale: 0.9,
+      letterSpacing: -0.5,
+      lineHeight: 1.4,
     },
     spacious: {
       ...defaultDarkThemeConfig,
       borderRadius: "1rem",
       fontScale: 1.1,
+      letterSpacing: 0.5,
+      lineHeight: 1.8,
+    },
+    serif: {
+      ...defaultDarkThemeConfig,
+      fontFamily: "Georgia, serif",
+      headingFontFamily: "Georgia, serif",
+      letterSpacing: 0.2,
+      lineHeight: 1.6,
+    },
+    modern: {
+      ...defaultDarkThemeConfig,
+      fontFamily: "system-ui, sans-serif",
+      headingFontFamily: "Garamond, serif",
+      letterSpacing: 0.1,
+      lineHeight: 1.6,
     },
   },
 };
@@ -246,6 +329,12 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
     
     root.style.setProperty("--radius", themeConfig.borderRadius);
     root.style.setProperty("--font-scale", themeConfig.fontScale.toString());
+    
+    // New typography CSS variables
+    root.style.setProperty("--font-family", themeConfig.fontFamily);
+    root.style.setProperty("--heading-font-family", themeConfig.headingFontFamily);
+    root.style.setProperty("--letter-spacing", themeConfig.letterSpacing + "px");
+    root.style.setProperty("--line-height", themeConfig.lineHeight.toString());
     
     // Save theme config to localStorage
     localStorage.setItem(`themeConfig_${theme}`, JSON.stringify(themeConfig));
