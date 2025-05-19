@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Palette, RefreshCw, Check } from "lucide-react";
+import { Palette, RefreshCw, Check, Layout, Type, Sparkles } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -48,6 +48,17 @@ const colorPalette = [
   "330 81% 84%", // Light Pink
 ];
 
+// Theme presets data 
+const themePresets = [
+  { name: "default", icon: "🌟", label: "Default" },
+  { name: "blue", icon: "🔵", label: "Blue" },
+  { name: "green", icon: "🟢", label: "Green" },
+  { name: "purple", icon: "🟣", label: "Purple" },
+  { name: "orange", icon: "🟠", label: "Orange" },
+  { name: "compact", icon: "🔍", label: "Compact" },
+  { name: "spacious", icon: "🌌", label: "Spacious" },
+];
+
 const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
   const { t } = useTranslation();
   const { theme } = useTheme();
@@ -64,6 +75,7 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
     borderColor,
     updateThemeConfig,
     resetThemeConfig,
+    applyPreset
   } = useThemeConfig();
   
   // State for current color editing
@@ -196,12 +208,35 @@ const ThemeConfigPanel = ({ side = "right" }: ThemeConfigPanelProps) => {
         </SheetHeader>
         
         <div className="py-6">
-          <Tabs defaultValue="colors" className="w-full">
-            <TabsList className="grid grid-cols-3 mb-4">
-              <TabsTrigger value="colors">Colors</TabsTrigger>
-              <TabsTrigger value="layout">Layout</TabsTrigger>
-              <TabsTrigger value="typography">Typography</TabsTrigger>
+          <Tabs defaultValue="presets" className="w-full">
+            <TabsList className="grid grid-cols-4 mb-4">
+              <TabsTrigger value="presets"><Sparkles className="h-4 w-4 mr-1" /> Presets</TabsTrigger>
+              <TabsTrigger value="colors"><Palette className="h-4 w-4 mr-1" /> Colors</TabsTrigger>
+              <TabsTrigger value="layout"><Layout className="h-4 w-4 mr-1" /> Layout</TabsTrigger>
+              <TabsTrigger value="typography"><Type className="h-4 w-4 mr-1" /> Type</TabsTrigger>
             </TabsList>
+            
+            {/* New Presets Tab */}
+            <TabsContent value="presets" className="space-y-6">
+              <div className="space-y-4">
+                <Label>Theme Presets</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {themePresets.map((preset) => (
+                    <Button
+                      key={preset.name}
+                      variant="outline"
+                      className="h-auto py-3 justify-start"
+                      onClick={() => applyPreset(preset.name)}
+                    >
+                      <div className="flex items-center">
+                        <span className="text-xl mr-2">{preset.icon}</span>
+                        <span>{preset.label}</span>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
             
             <TabsContent value="colors" className="space-y-6">
               <ColorInput 

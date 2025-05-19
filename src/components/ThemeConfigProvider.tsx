@@ -15,6 +15,7 @@ interface ThemeConfigContextType {
   borderColor: string;
   updateThemeConfig: (config: Partial<ThemeConfigValues>) => void;
   resetThemeConfig: () => void;
+  applyPreset: (presetName: string) => void;
 }
 
 interface ThemeConfigValues {
@@ -30,6 +31,7 @@ interface ThemeConfigValues {
   borderColor: string;
 }
 
+// Default light theme config
 const defaultLightThemeConfig: ThemeConfigValues = {
   primaryColor: "222.2 47.4% 11.2%",
   secondaryColor: "210 40% 96.1%",
@@ -43,6 +45,7 @@ const defaultLightThemeConfig: ThemeConfigValues = {
   borderColor: "214.3 31.8% 91.4%",
 };
 
+// Default dark theme config
 const defaultDarkThemeConfig: ThemeConfigValues = {
   primaryColor: "210 40% 98%",
   secondaryColor: "217.2 32.6% 17.5%",
@@ -54,6 +57,132 @@ const defaultDarkThemeConfig: ThemeConfigValues = {
   cardColor: "222.2 84% 4.9%",
   textColor: "210 40% 98%",
   borderColor: "217.2 32.6% 17.5%",
+};
+
+// Theme presets for light and dark modes
+const themePresets = {
+  light: {
+    default: defaultLightThemeConfig,
+    blue: {
+      primaryColor: "221 83% 53%", // Blue
+      secondaryColor: "210 40% 96.1%",
+      accentColor: "221 83% 84%", // Light Blue
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "210 40% 96.1%",
+      backgroundColor: "0 0% 100%",
+      cardColor: "0 0% 100%",
+      textColor: "222.2 84% 4.9%",
+      borderColor: "214.3 31.8% 91.4%",
+    },
+    green: {
+      primaryColor: "142 71% 45%", // Green
+      secondaryColor: "210 40% 96.1%",
+      accentColor: "142 71% 84%", // Light Green
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "210 40% 96.1%",
+      backgroundColor: "0 0% 100%",
+      cardColor: "0 0% 100%",
+      textColor: "222.2 84% 4.9%",
+      borderColor: "214.3 31.8% 91.4%",
+    },
+    purple: {
+      primaryColor: "262 83.3% 57.8%", // Purple
+      secondaryColor: "210 40% 96.1%",
+      accentColor: "262 83% 84%", // Light Purple
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "210 40% 96.1%",
+      backgroundColor: "0 0% 100%",
+      cardColor: "0 0% 100%",
+      textColor: "222.2 84% 4.9%",
+      borderColor: "214.3 31.8% 91.4%",
+    },
+    orange: {
+      primaryColor: "36 100% 50%", // Orange
+      secondaryColor: "210 40% 96.1%",
+      accentColor: "36 100% 84%", // Light Orange
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "210 40% 96.1%",
+      backgroundColor: "0 0% 100%",
+      cardColor: "0 0% 100%",
+      textColor: "222.2 84% 4.9%",
+      borderColor: "214.3 31.8% 91.4%",
+    },
+    compact: {
+      ...defaultLightThemeConfig,
+      borderRadius: "0.25rem",
+      fontScale: 0.9,
+    },
+    spacious: {
+      ...defaultLightThemeConfig,
+      borderRadius: "1rem",
+      fontScale: 1.1,
+    },
+  },
+  dark: {
+    default: defaultDarkThemeConfig,
+    blue: {
+      primaryColor: "221 83% 84%", // Light Blue
+      secondaryColor: "217.2 32.6% 17.5%",
+      accentColor: "221 83% 53%", // Blue
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "217.2 32.6% 17.5%",
+      backgroundColor: "222.2 84% 4.9%",
+      cardColor: "222.2 84% 4.9%",
+      textColor: "210 40% 98%",
+      borderColor: "217.2 32.6% 17.5%",
+    },
+    green: {
+      primaryColor: "142 71% 84%", // Light Green
+      secondaryColor: "217.2 32.6% 17.5%",
+      accentColor: "142 71% 45%", // Green
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "217.2 32.6% 17.5%",
+      backgroundColor: "222.2 84% 4.9%",
+      cardColor: "222.2 84% 4.9%",
+      textColor: "210 40% 98%",
+      borderColor: "217.2 32.6% 17.5%",
+    },
+    purple: {
+      primaryColor: "262 83% 84%", // Light Purple
+      secondaryColor: "217.2 32.6% 17.5%",
+      accentColor: "262 83.3% 57.8%", // Purple
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "217.2 32.6% 17.5%",
+      backgroundColor: "222.2 84% 4.9%",
+      cardColor: "222.2 84% 4.9%",
+      textColor: "210 40% 98%",
+      borderColor: "217.2 32.6% 17.5%",
+    },
+    orange: {
+      primaryColor: "36 100% 84%", // Light Orange
+      secondaryColor: "217.2 32.6% 17.5%",
+      accentColor: "36 100% 50%", // Orange
+      borderRadius: "0.5rem",
+      fontScale: 1,
+      mutedColor: "217.2 32.6% 17.5%",
+      backgroundColor: "222.2 84% 4.9%",
+      cardColor: "222.2 84% 4.9%",
+      textColor: "210 40% 98%",
+      borderColor: "217.2 32.6% 17.5%",
+    },
+    compact: {
+      ...defaultDarkThemeConfig,
+      borderRadius: "0.25rem",
+      fontScale: 0.9,
+    },
+    spacious: {
+      ...defaultDarkThemeConfig,
+      borderRadius: "1rem",
+      fontScale: 1.1,
+    },
+  },
 };
 
 const ThemeConfigContext = createContext<ThemeConfigContextType | undefined>(undefined);
@@ -137,12 +266,24 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
     localStorage.setItem(`themeConfig_${theme}`, JSON.stringify(defaultConfig));
   };
 
+  const applyPreset = (presetName: string) => {
+    const presets = theme === 'dark' ? themePresets.dark : themePresets.light;
+    if (presetName in presets) {
+      const preset = presets[presetName as keyof typeof presets];
+      setThemeConfig(preset);
+      localStorage.setItem(`themeConfig_${theme}`, JSON.stringify(preset));
+    } else {
+      console.warn(`Theme preset "${presetName}" not found`);
+    }
+  };
+
   return (
     <ThemeConfigContext.Provider 
       value={{ 
         ...themeConfig, 
         updateThemeConfig, 
-        resetThemeConfig 
+        resetThemeConfig,
+        applyPreset
       }}
     >
       {children}
