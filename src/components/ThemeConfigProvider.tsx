@@ -278,7 +278,10 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
       const savedConfig = localStorage.getItem(`themeConfig_${theme}`);
       if (savedConfig) {
         try {
-          return JSON.parse(savedConfig);
+          // Merge saved config with default config to handle missing properties
+          const parsedConfig = JSON.parse(savedConfig);
+          const defaultConfig = theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig;
+          return { ...defaultConfig, ...parsedConfig };
         } catch (e) {
           console.error("Failed to parse saved theme config", e);
         }
@@ -289,18 +292,21 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
 
   // Update config when theme changes
   useEffect(() => {
+    const defaultConfig = theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig;
     const savedConfig = localStorage.getItem(`themeConfig_${theme}`);
     if (savedConfig) {
       try {
-        setThemeConfig(JSON.parse(savedConfig));
+        // Merge saved config with default config to ensure all properties exist
+        const parsedConfig = JSON.parse(savedConfig);
+        setThemeConfig({ ...defaultConfig, ...parsedConfig });
       } catch (e) {
-        setThemeConfig(theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig);
+        setThemeConfig(defaultConfig);
       }
     } else {
-      setThemeConfig(theme === 'dark' ? defaultDarkThemeConfig : defaultLightThemeConfig);
+      setThemeConfig(defaultConfig);
     }
   }, [theme]);
-
+  
   // Apply theme configuration to CSS variables
   useEffect(() => {
     const root = document.documentElement;
@@ -380,6 +386,7 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useThemeConfig = () => {
   const context = useContext(ThemeConfigContext);
   if (context === undefined) {
