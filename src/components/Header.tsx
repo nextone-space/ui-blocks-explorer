@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useTheme } from '@/components/ThemeProvider';
 import LanguageSelector from '@/components/LanguageSelector';
+import ThemeConfigPanel from '@/components/ThemeConfigPanel';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -28,6 +29,7 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-2">
           <LanguageSelector />
+          <ThemeConfigPanel />
           <Button 
             variant="ghost" 
             size="icon"
@@ -37,7 +39,7 @@ const Header = () => {
               theme === "dark" ? "scale-0" : "scale-100"
             }`} />
             <Moon className={`absolute h-5 w-5 transition-all ${
-              theme === "dark" ? "scale-100" : "scale-0"
+              theme === "dark" ? "scale-0" : "scale-100"
             }`} />
             <span className="sr-only">{t('header.toggleTheme')}</span>
           </Button>
