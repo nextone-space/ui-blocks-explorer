@@ -51,8 +51,12 @@
 
     --sidebar-ring: 217.2 91.2% 59.8%;
     
-    /* Theme config variable */
+    /* Theme config variables */
     --font-scale: 1;
+    --font-family: system-ui, sans-serif;
+    --heading-font-family: system-ui, sans-serif;
+    --letter-spacing: 0px;
+    --line-height: 1.5;
   }
 
   .dark {
@@ -101,13 +105,20 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-family);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
   }
   
-  /* Apply font scaling to headings and text */
+  /* Apply font styling to headings */
   h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font-family);
     font-size: calc(var(--font-scale) * 1em);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
   }
   
+  /* Apply font scaling to text elements */
   p, span, a, button, input, textarea, select, li {
     font-size: calc(var(--font-scale) * 1em);
   }

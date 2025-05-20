@@ -1,3 +1,4 @@
+
 # Theme
 
 https://github.com/jnsahaj/tweakcn
@@ -38,6 +39,12 @@ A visual no-code theme editor for shadcn/ui components
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Typography variables */
+  --font-family: system-ui, sans-serif;
+  --heading-font-family: system-ui, sans-serif;
+  --font-scale: 1;
+  --letter-spacing: 0px;
+  --line-height: 1.5;
 }
 
 .dark {
@@ -72,6 +79,11 @@ A visual no-code theme editor for shadcn/ui components
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.439 0 0);
+  /* Typography variables */
+  --font-family: system-ui, sans-serif;
+  --heading-font-family: system-ui, sans-serif;
+  --font-scale: 1;
+  --letter-spacing: 0px;
+  --line-height: 1.5;
 }
-
 ```

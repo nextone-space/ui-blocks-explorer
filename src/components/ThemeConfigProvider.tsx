@@ -334,9 +334,9 @@ export function ThemeConfigProvider({ children }: { children: React.ReactNode })
     root.style.setProperty("--input", themeConfig.borderColor);
     
     root.style.setProperty("--radius", themeConfig.borderRadius);
+  
+    // Typography CSS variables
     root.style.setProperty("--font-scale", themeConfig.fontScale.toString());
-    
-    // New typography CSS variables
     root.style.setProperty("--font-family", themeConfig.fontFamily);
     root.style.setProperty("--heading-font-family", themeConfig.headingFontFamily);
     root.style.setProperty("--letter-spacing", themeConfig.letterSpacing + "px");
